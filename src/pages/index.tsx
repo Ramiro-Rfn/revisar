@@ -10,7 +10,7 @@ function Landing(){
   function handleClick() {
     
     setIsFlipped(!isFlipped);
-  }
+src/styles/Deck.module.scss  }
  */
     
   return (
