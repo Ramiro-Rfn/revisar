@@ -1,0 +1,39 @@
+
+.reactCardFlip {
+    position: absolute;
+    border: 1px solid var(--white);
+    border-radius: 1rem;
+    cursor: grab;
+
+    .item {
+        display: flex;
+        flex-direction: column;
+        width: 30rem;
+        height: 25rem;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background-color: var(--gray-850);
+
+        border: 1px solid var(--gray-850);
+        border-radius: 1rem;
+
+        h4 {
+            font-size: 2rem;
+            color: var(--white);
+            text-align: center;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+            cursor: pointer;
+        }
+    }
+}
+
+   

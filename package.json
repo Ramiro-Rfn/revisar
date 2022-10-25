@@ -13,6 +13,8 @@
     "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-card-flip": "^1.1.6",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "sass": "^1.53.0"

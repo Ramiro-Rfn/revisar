@@ -1,0 +1,31 @@
+.container{
+    width: 100%;
+
+    .content {
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .itemsContainer {
+            width: 30rem;
+            height: 30rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            margin-top: 2rem;
+        }
+
+
+        .boxsContainer {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+    }
+}
