@@ -1,11 +1,13 @@
 import Head from 'next/head';
+import { useContext } from 'react';
 import { CardBox } from '../components/CardBox';
 import { StudyCard } from '../components/StudyCard';
+import { studyContext } from '../context/studyContex';
 
 import styles from '../styles/Study.module.scss';
-import { data } from './data';
 
 export default function Study() {
+    const { goodItems, normalItems, wrongItems, studyItems } = useContext(studyContext)
     
 
     return(
@@ -21,17 +23,53 @@ export default function Study() {
                         
                     </div>
                     <div className={styles.itemsContainer} >
-                        {data.map((data, index)=>{
-                            return (
-                                <StudyCard data={data} index={index}/>
-                            )
-                        })}
+
+                        <div className={styles.cardEmpty}>
+                            Lista Vazia
+                        </div>
+                        
+                        {
+                            studyItems.map((data, index)=>{
+                                return (
+                                    <StudyCard key={data.id} data={data} index={index}/>
+                                )
+                            })
+                        }
                     </div>
 
                     <div  className={styles.boxsContainer}>
-                        <CardBox label='Bom' color='green'/>
-                        <CardBox label='Normal' color='orange'/>
-                        <CardBox label='Ruim' color='red'/>
+                        <CardBox 
+                            image={{ 
+                                boxEmpty: '/images/greenBox.svg', 
+                                boxFilled: '/images/greenBox-filled.svg' 
+                            }} 
+                            totalItem={goodItems.length} 
+                            label='Acertei' 
+                            color='green'
+                            boxType='good'
+                        />
+                        
+                        <CardBox 
+                            image={{ 
+                                boxEmpty: '/images/orangeBox.svg', 
+                                boxFilled: '/images/orangeBox-filled.svg' 
+                            }} 
+                            totalItem={normalItems.length} 
+                            label='Normal' 
+                            color='orange'
+                            boxType='normal'
+                        />
+
+                        <CardBox 
+                            image={{ 
+                                boxEmpty: '/images/redBox.svg', 
+                                boxFilled: '/images/redBox-filled.svg' 
+                            }}
+                            totalItem={wrongItems.length} 
+                            label='Errei' 
+                            color='red'
+                            boxType='wrong'
+                        />
                     </div>
                 </div>
             </div>

@@ -4,8 +4,13 @@
     align-items: center;
 
     div  {
-        width: 6.25rem;
-        height: 6.25rem;    
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        background-size: contain!important;
+        background-repeat: no-repeat!important;
+        color: var(--white);
     }
 
     p {

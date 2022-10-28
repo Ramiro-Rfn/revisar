@@ -19,7 +19,8 @@ export function StudyCard( { data, index }: StudyCardProps) {
 
     const [{ isDragging } , drag, id] = useDrag(() => ({
         type: 'CARD',
-        item: { id: index },
+        item: { id: data.id },
+
         collect: (monitor) => {
             return {
                 isDragging: !!monitor.isDragging()
@@ -45,13 +46,13 @@ export function StudyCard( { data, index }: StudyCardProps) {
         >
             <ReactCardFlip isFlipped={isFlipped} flipDirection='horizontal'>
                 <div className={styles.item}>
-                    <h4>Pergunta {index +1} - How you doing now?</h4>
+                    <h4>Pergunta {index +1} - {data.front}</h4>
 
                     <button onClick={handleClick}>Ver Respota</button>
                 </div>
 
                 <div className={styles.item}>
-                    <h4>O que você está fazendo agora?</h4>
+                    <h4>{data.back}</h4>
 
                     <button onClick={handleClick} >Ver Pergunta</button>
                 </div>
