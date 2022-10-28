@@ -7,8 +7,12 @@ import { studyContext } from '../context/studyContex';
 import styles from '../styles/Study.module.scss';
 
 export default function Study() {
-    const { goodItems, normalItems, wrongItems, studyItems } = useContext(studyContext)
-    
+    const { 
+        goodItems, 
+        normalItems, 
+        wrongItems, 
+        studyItems 
+    } = useContext(studyContext)    
 
     return(
         <>

@@ -1,17 +1,28 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { FormEvent, useContext, useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
+import { studyContext } from '../context/studyContex';
 
 import styles from '../styles/Landing.module.scss';
 
 function Landing(){
- /*  const [isFlipped, setIsFlipped] = useState(false);
+  const [studyPlanName, setStudyPlanName] = useState('')
 
-  function handleClick() {
+  const { 
+    studyPlans,
+    createStudyPlan
+  } = useContext(studyContext)    
+
+  function handleCreate(event: FormEvent) {
+    event.preventDefault();
+
+    if(!studyPlanName) {
+      return;
+    }
     
-    setIsFlipped(!isFlipped);
-src/styles/Deck.module.scss  }
- */
+    createStudyPlan(studyPlanName)
+  }
     
   return (
       <>
@@ -37,29 +48,29 @@ src/styles/Deck.module.scss  }
           <main>
             <div className={styles.content}>
               <div className={styles.formContainer}>
-                  <form action="">
-                      <input type="text" placeholder='Criar novo plano de estudo'/>
+                  <form onSubmit={handleCreate} action="">
+                      <input 
+                        value={studyPlanName} 
+                        onChange={(event) => setStudyPlanName(event.target.value)} 
+                        type="text" 
+                        placeholder='Criar novo plano de estudo'/>
                       <button type='submit'>Criar</button>
                   </form>
                 </div>
               <div className={styles.cardContainer}>
-                {[
-                  'Disciplina de piscologia.',
-                  'Prova de contabilidade e gestão.',
-                  'Curso de programação avançado.',
-                  'Estudo de palavras em inglês.',
-                  'Estudo das coisas da terra.'
-                ].map((text)=>{
+                {studyPlans?.map((studyPlan)=>{
                   return(
-                    <div className={styles.card}>
-                      {/* <div className={styles.cardItemsNumber}>
-                        <p>100</p>
-                      </div> */}
+                    <Link href={`/studar/${studyPlan.id}`}>
+                      <a key={studyPlan.id} className={styles.card}>
+                        {/* <div className={styles.cardItemsNumber}>
+                          <p>100</p>
+                        </div> */}
 
-                      <h3>{text}</h3>
+                        <h3>{studyPlan?.name}</h3>
 
-                      <button>Estudar</button> 
-                    </div>
+                        <button>Estudar</button> 
+                      </a>
+                    </Link>
                   )
                 })}  
               </div>
