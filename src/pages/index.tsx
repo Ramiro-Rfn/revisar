@@ -36,20 +36,34 @@ src/styles/Deck.module.scss  }
 
           <main>
             <div className={styles.content}>
+              <div className={styles.formContainer}>
+                  <form action="">
+                      <input type="text" placeholder='Criar novo plano de estudo'/>
+                      <button type='submit'>Criar</button>
+                  </form>
+                </div>
+              <div className={styles.cardContainer}>
+                {[
+                  'Disciplina de piscologia.',
+                  'Prova de contabilidade e gestão.',
+                  'Curso de programação avançado.',
+                  'Estudo de palavras em inglês.',
+                  'Estudo das coisas da terra.'
+                ].map((text)=>{
+                  return(
+                    <div className={styles.card}>
+                      {/* <div className={styles.cardItemsNumber}>
+                        <p>100</p>
+                      </div> */}
 
-              {[1,1,1,1,1].map(()=>{
-                return(
-                  <div className={styles.card}>
-                    <div className={styles.cardItemsNumber}>
-                      <p>8</p>
+                      <h3>{text}</h3>
+
+                      <button>Estudar</button> 
                     </div>
-
-                    <h3>Curso de línguas</h3>
-
-                    <button>Estudar</button>
-                  </div>
-                )
-              })}
+                  )
+                })}  
+              </div>
+              
             </div>
           </main>
         </div>
