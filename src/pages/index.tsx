@@ -1,27 +1,52 @@
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { FormEvent, useContext, useState } from 'react';
-import { FiPlus } from 'react-icons/fi';
-import { studyContext } from '../context/studyContex';
+import { useRouter } from 'next/router';
+import { FormEvent, useState } from 'react';
+import { Oval } from 'react-loader-spinner';
+import { prisma } from '../lib/prisma';
+import { api } from '../services/api';
 
 import styles from '../styles/Landing.module.scss';
 
-function Landing(){
-  const [studyPlanName, setStudyPlanName] = useState('')
+interface LandingProps {
+  studyPlans: {
+    id: string,
+    name: string
+    createdAt: Date
+  }[]
+}
 
-  const { 
-    studyPlans,
-    createStudyPlan
-  } = useContext(studyContext)    
+function Landing({ studyPlans }: LandingProps){
+  const [studyPlanName, setStudyPlanName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleCreate(event: FormEvent) {
+  const { push } = useRouter()
+
+  async function handleCreate(event: FormEvent) {
     event.preventDefault();
 
-    if(!studyPlanName) {
-      return;
+    try {
+      
+      setIsLoading(true);
+      
+      if(!studyPlanName) {
+        return;
+      }
+
+      const {data} = await api.post('/studyPlan/create' , { name: studyPlanName})
+
+      if(data.id) {
+        push(`/deck/${data.id}`);
+        
+        setIsLoading(false);
+      }
+
+      setStudyPlanName('');
+    } catch (error) {
+      console.log(error)
     }
     
-    createStudyPlan(studyPlanName)
   }
 
   console.log(studyPlans)
@@ -34,13 +59,12 @@ function Landing(){
         <div className={styles.container}>
           <header>
             <div className={styles.content}>
-              <h1 className={styles.logo}>revisar</h1>
+              <h1 className={styles.logo}>.revisar</h1>
 
               <nav>
-                <Link href='/deck'>
+                <Link href=''>
                   <a>
-                    Adicionar
-                    <FiPlus color='#121214' size={24}/>
+                    Log out
                   </a>
                 </Link>
               </nav>
@@ -56,7 +80,26 @@ function Landing(){
                         onChange={(event) => setStudyPlanName(event.target.value)} 
                         type="text" 
                         placeholder='Criar novo plano de estudo'/>
-                      <button type='submit'>Criar</button>
+                      <button type='submit'>
+                        {
+                          isLoading? (
+                            <Oval
+                              height={24}
+                              width={24}
+                              color="#121214"
+                              wrapperStyle={{}}
+                              wrapperClass=""
+                              visible={true}
+                              ariaLabel='oval-loading'
+                              secondaryColor="#1f2729"
+                              strokeWidth={4}
+                              strokeWidthSecondary={4}
+
+                            />
+                          ):
+                          'Criar'
+                        }
+                      </button>
                   </form>
                 </div>
               <div className={styles.cardContainer}>
@@ -64,10 +107,6 @@ function Landing(){
                   return(
                     <Link key={studyPlan.id} href={`/deck/${studyPlan.id}`}>
                       <a  className={styles.card}>
-                        {/* <div className={styles.cardItemsNumber}>
-                          <p>100</p>
-                        </div> */}
-
                         <h3>{studyPlan?.name}</h3>
 
                         <button>Estudar</button> 
@@ -85,3 +124,23 @@ function Landing(){
 }
 
 export default Landing;
+
+
+export const getServerSideProps: GetServerSideProps =async () => {
+  const studyPlans = await prisma.studyPlan.findMany();
+
+  const data = studyPlans.map((studyPlan)=> {
+    return {
+      id: studyPlan.id,
+      name: studyPlan.name,
+      createdAt: studyPlan.createdAt.toDateString(),
+      updatedAt: studyPlan.updatedAt.toDateString()
+    }
+  })
+  
+  return {
+    props: {
+      studyPlans: data
+    }
+  }
+}

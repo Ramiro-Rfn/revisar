@@ -1,12 +1,12 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { FormEvent, useContext, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { FaPen } from 'react-icons/fa';
-import { studyContext } from '../../context/studyContex';
+import { prisma } from '../../lib/prisma';
 
 import styles from '../../styles/Deck.module.scss';
 
-type StudyItem = {
+type StudyQuestion = {
     id: string,
     front: string,
     back: string,
@@ -18,35 +18,21 @@ interface StudyPlan {
 }
 
 interface DeckProps {
-    studyPlanId: string;
+    studyPlan: StudyPlan;
+    studyQuestions: StudyQuestion[] 
 }
 
 
-export default function Deck({ studyPlanId }: DeckProps) {
+export default function Deck({ studyPlan, studyQuestions }: DeckProps) {
     const [frontField, setFrontField] = useState('');
     const [backField, setBackField] = useState('');
     
-    const {
-        studyPlans,
-        createStudyItems,
-        studyItems
-    } = useContext(studyContext);
-
-    const [studyPlan, setStudyPlan] = useState<StudyPlan>();
-
     function handleAddItem(event: FormEvent) {
         event.preventDefault()
-
-        createStudyItems(frontField, backField, String(studyPlan?.id))
 
         setBackField('')
         setFrontField('')
     }
-
-    useEffect(() => {
-        const newStudyPlan = studyPlans.find((studyPlan)=> studyPlan.id === studyPlanId); 
-        setStudyPlan(newStudyPlan)
-    }, [])
 
     return (
         <>
@@ -80,7 +66,7 @@ export default function Deck({ studyPlanId }: DeckProps) {
                     </form>
 
                     <div className={styles.itemsContainer}>
-                        {studyItems.filter((studyItem) => studyItem.studyPlan_id === studyPlanId).map((item)=>{
+                        {studyQuestions.map((item)=>{
                             return(
                                 <div key={item.id} className={styles.item}>
                                     <h4>{item.front}</h4>
@@ -100,10 +86,29 @@ export default function Deck({ studyPlanId }: DeckProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const studyPlanId = params?.id;
+
+    const studyPlan = await prisma.studyPlan.findUnique({where: { id: String(studyPlanId) }});
+    const studyQuestions = await prisma.studyQuestion.findMany({where: { studyPlanId: String(studyPlanId) }})
+    
+    const data = studyQuestions.map((data)=> {
+        return {
+            id: data.id,
+            question: data.question,
+            answer: data.answer,
+            createdAt: data.createdAt.toLocaleDateString(),
+            updatedAt: data.updatedAt.toLocaleDateString()
+        }
+    })
     
     return {
         props: {
-            studyPlanId
+            studyPlan: {
+                id: studyPlan?.id,
+                name: studyPlan?.name,
+                createdAt: studyPlan?.createdAt.toLocaleDateString(),
+                updatedAt: studyPlan?.updatedAt.toLocaleDateString()
+            },
+            studyQuestions: data
         }
     }
 }
