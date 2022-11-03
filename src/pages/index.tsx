@@ -23,6 +23,8 @@ function Landing(){
     
     createStudyPlan(studyPlanName)
   }
+
+  console.log(studyPlans)
     
   return (
       <>
@@ -60,8 +62,8 @@ function Landing(){
               <div className={styles.cardContainer}>
                 {studyPlans?.map((studyPlan)=>{
                   return(
-                    <Link href={`/studar/${studyPlan.id}`}>
-                      <a key={studyPlan.id} className={styles.card}>
+                    <Link key={studyPlan.id} href={`/deck/${studyPlan.id}`}>
+                      <a  className={styles.card}>
                         {/* <div className={styles.cardItemsNumber}>
                           <p>100</p>
                         </div> */}

@@ -15,27 +15,28 @@
         form {
             margin-top: 3rem;
             margin-bottom: 3rem;
+            display: flex;
 
             width: 100%;
-
-            padding: 0 4rem;
 
             .inputWrapper {
                 display: flex;
                 flex-direction: column;
                 margin-bottom: 1rem;
+                width: 40%;
 
-                label {
-                    font-size: 1rem;
-                    margin-bottom: 0.5rem;
-                    color: var(--white)
+                & + .inputWrapper {
+                    margin-left: 1rem;
                 }
+
+             
 
                 input {
                     width: 100%;
                     padding: 0.5rem 1rem;
                     border-radius: 0.5rem;
                     height: 2.5rem;
+                    font-size: 1rem;
                     background-color: var(--gray-850);
                     color: var(--white);
 
@@ -43,12 +44,14 @@
             }
 
             button {
-                width: 100%;
+                width: 20%;
                 height: 2.5rem;
                 border-radius: 0.5rem;
-                font-size: 1.25rem;
+                font-size: 1.125rem;
                 color: var(--gray-900);
                 background-color: var(--yellow-500);
+                margin-left: 1rem;
+                font-weight: bold;
             }
         }
 

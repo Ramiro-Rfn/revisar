@@ -2,13 +2,12 @@ import produce from "immer";
 import { useRouter } from "next/router";
 import { parseCookies, setCookie } from "nookies";
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { data } from "../pages/data";
-
 
 type StudyItem = {
     id: string,
     front: string,
     back: string,
+    studyPlan_id: string,
 }
 
 interface studyContextProps {
@@ -17,15 +16,14 @@ interface studyContextProps {
     wrongItems: BoxItems[],
     studyItems: StudyItem[],
     studyPlans: StudyPlan[]
-    
     moveToBox: (item: any, destination: any, dropped: boolean) => void,
     createStudyPlan: (studyPlanName: string) => void,
+    createStudyItems: (front: string, back: string, studyPlan_id: string) => void,
 }
 
 interface StudyPlan {
     id: string,
     name: string,
-    studyItems: StudyItem[]
 }
 
 interface studyContextProviderProps {
@@ -39,13 +37,11 @@ type BoxItems = {
 
 export const studyContext = createContext({} as studyContextProps)
 
-
-
 export function StudyContextProvider({ children }: studyContextProviderProps) {
     const { push } = useRouter()
     
     const [studyPlans, setStudyPlans] = useState<StudyPlan[]>([])
-    const [studyItems, setStudyItems] = useState(data);
+    const [studyItems, setStudyItems] = useState<StudyItem[]>([]);
     
     const [goodItems, setGoodItems] = useState<BoxItems[]>([]);
     const [normalItems, setNormalItems] = useState<BoxItems[]>([]);
@@ -55,16 +51,47 @@ export function StudyContextProvider({ children }: studyContextProviderProps) {
         const coockies = parseCookies()
     
         let parsedStudyPlan =  coockies['studar.studyPlan'] ? JSON.parse(coockies['studar.studyPlan']) : []
-
+        console.log(parsedStudyPlan)
         setStudyPlans(parsedStudyPlan);
     },[])
+
+    useEffect(() => {
+        const coockies = parseCookies()
+    
+        let parsedStudyItems =  coockies['studar.studyItems'] ? JSON.parse(coockies['studar.studyItems']) : []
+
+        console.log(parsedStudyItems)
+        setStudyItems(parsedStudyItems);
+    },[])
+
+    async function createStudyItems(front: string, back: string, studyPlan_id: string) {
+        try {
+            if(!front && !back && !studyPlan_id){
+                return;
+            }
+            
+            setStudyItems(produce((draft) => {
+                draft.push({
+                    id: String(Date.now()),
+                    front,
+                    back,
+                    studyPlan_id
+                })
+            }))
+    
+            setCookie(undefined, `studar.studyItems`, JSON.stringify(studyPlans), {
+                maxAge: 60 * 60 * 24 * 30 // 30 dias
+            })
+        } catch (error) {
+            alert(error?.message);
+        }
+    }
 
     async function createStudyPlan(studyPlanName: string) {
         try {
             const studyPlan = {
                 id: String(Date.now()),
                 name: studyPlanName,
-                studyItems: []
             }
 
             setStudyPlans(produce((draft) => {
@@ -116,7 +143,8 @@ export function StudyContextProvider({ children }: studyContextProviderProps) {
                 studyItems,
                 studyPlans,
                 moveToBox,
-                createStudyPlan
+                createStudyPlan,
+                createStudyItems
             }}
         >
             {children}
