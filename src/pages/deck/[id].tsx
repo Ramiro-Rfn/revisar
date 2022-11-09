@@ -2,14 +2,16 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { FormEvent, useState } from 'react';
 import { FaPen } from 'react-icons/fa';
+import { Oval } from 'react-loader-spinner';
 import { prisma } from '../../lib/prisma';
+import { api } from '../../services/api';
 
 import styles from '../../styles/Deck.module.scss';
 
 type StudyQuestion = {
     id: string,
-    front: string,
-    back: string,
+    question: string,
+    answer: string,
 }
 
 interface StudyPlan {
@@ -26,9 +28,32 @@ interface DeckProps {
 export default function Deck({ studyPlan, studyQuestions }: DeckProps) {
     const [frontField, setFrontField] = useState('');
     const [backField, setBackField] = useState('');
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    console.log(studyQuestions)
     
-    function handleAddItem(event: FormEvent) {
-        event.preventDefault()
+    async function handleAddItem(event: FormEvent) {
+        event.preventDefault();
+
+        try {
+            if(!frontField && !backField) return;
+             
+            setIsLoading(true)
+
+            const { data } = await api.post('/studyQuestion/create' , { 
+                question: frontField,
+                answer: backField,
+                studyPlanId: studyPlan.id
+            })
+
+            if(data.id) {
+                setIsLoading(false)
+            }
+            
+        } catch (error) {
+            
+        }
 
         setBackField('')
         setFrontField('')
@@ -62,14 +87,33 @@ export default function Deck({ studyPlan, studyQuestions }: DeckProps) {
                             />
                         </div>
 
-                        <button onClick={handleAddItem} type='submit'>Adicionar</button>
+                        <button onClick={handleAddItem} type='submit'>
+                        {
+                          isLoading? (
+                            <Oval
+                              height={24}
+                              width={24}
+                              color="#121214"
+                              wrapperStyle={{}}
+                              wrapperClass=""
+                              visible={true}
+                              ariaLabel='oval-loading'
+                              secondaryColor="#1f2729"
+                              strokeWidth={4}
+                              strokeWidthSecondary={4}
+
+                            />
+                          ):
+                          'Adicionar'
+                        }
+                        </button>
                     </form>
 
                     <div className={styles.itemsContainer}>
                         {studyQuestions.map((item)=>{
                             return(
                                 <div key={item.id} className={styles.item}>
-                                    <h4>{item.front}</h4>
+                                    <h4>{item.question}</h4>
 
                                     <button>
                                         <FaPen/>

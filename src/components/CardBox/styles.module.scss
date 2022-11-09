@@ -11,6 +11,10 @@
         background-size: contain!important;
         background-repeat: no-repeat!important;
         color: var(--white);
+
+        img {
+            width: 100px;
+        }
     }
 
     p {

@@ -7,12 +7,21 @@ import styles from './styles.module.scss';
 interface StudyCardProps {
     data: {
         id: string,
-        front: string,
-        back: string,
+        question: string,
+        answer: string,
     }
 
     index: number,
 }
+
+
+function DraggableCard({ connectDragSource, connectDragPreview }) {
+    return (
+      <>
+        
+      </>
+    )
+  }
 
 export function StudyCard( { data, index }: StudyCardProps) {
     const [isFlipped, setIsFlipped] = useState(false);
@@ -46,13 +55,13 @@ export function StudyCard( { data, index }: StudyCardProps) {
         >
             <ReactCardFlip isFlipped={isFlipped} flipDirection='horizontal'>
                 <div className={styles.item}>
-                    <h4>Pergunta {index +1} - {data.front}</h4>
+                    <h4>{index +1} - {data.question}</h4>
 
                     <button onClick={handleClick}>Ver Respota</button>
                 </div>
 
                 <div className={styles.item}>
-                    <h4>{data.back}</h4>
+                    <h4>{data.answer}</h4>
 
                     <button onClick={handleClick} >Ver Pergunta</button>
                 </div>

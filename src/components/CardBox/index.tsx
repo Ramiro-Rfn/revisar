@@ -21,17 +21,14 @@ export function CardBox({ label, color, totalItem, image, boxType }: CardBoxProp
         moveToBox
     } = useContext(studyContext);
 
-    const [{ isOver, canDrop, item, destination, dropped }, drop] = useDrop(() => ({
+    const [{ isOver, dropped }, drop] = useDrop(() => ({
         accept: 'CARD',
         drop: (item, monitor) => {
-            moveToBox(item, boxType, monitor.didDrop())
+            moveToBox(item, boxType, dropped)
         },
         
         collect: ( monitor) => ({
             isOver: !!monitor.isOver(),
-            canDrop: !!monitor.canDrop(),
-            item: monitor.getItem(),
-            destination: monitor.getHandlerId(),
             dropped: monitor.didDrop(),
           })
       }))

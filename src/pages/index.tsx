@@ -109,7 +109,9 @@ function Landing({ studyPlans }: LandingProps){
                       <a  className={styles.card}>
                         <h3>{studyPlan?.name}</h3>
 
-                        <button>Estudar</button> 
+                        <button onClick={(e)=> {
+                          push(`/estudar/${studyPlan.id}`)
+                        } }>Estudar</button> 
                       </a>
                     </Link>
                   )
