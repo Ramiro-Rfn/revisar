@@ -18,7 +18,8 @@ interface CardBoxProps {
 
 export function CardBox({ label, color, totalItem, image, boxType }: CardBoxProps) {
     const {
-        moveToBox
+        moveToBox,
+        studyQuestionsInBox
     } = useContext(studyContext);
 
     const [{ isOver, dropped }, drop] = useDrop(() => ({
@@ -31,7 +32,11 @@ export function CardBox({ label, color, totalItem, image, boxType }: CardBoxProp
             isOver: !!monitor.isOver(),
             dropped: monitor.didDrop(),
           })
-      }))
+    }))
+
+    function handleClickBox() {
+        studyQuestionsInBox(boxType);
+    }
 
     return (
         <div 
@@ -39,6 +44,7 @@ export function CardBox({ label, color, totalItem, image, boxType }: CardBoxProp
             style={{
             }} 
             className={styles.cardBox}
+            onClick={handleClickBox}
         >
             <div 
                 style={{ 

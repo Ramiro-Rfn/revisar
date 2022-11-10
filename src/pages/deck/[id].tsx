@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { FormEvent, useState } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { Oval } from 'react-loader-spinner';
+import { Header } from '../../components/Header';
 import { prisma } from '../../lib/prisma';
 import { api } from '../../services/api';
 
@@ -65,9 +66,8 @@ export default function Deck({ studyPlan, studyQuestions }: DeckProps) {
                 <title>{`Deck | ${studyPlan?.name}`}</title>
             </Head>
             <div className={styles.container}>
+                <Header title={studyPlan?.name} hasEstudyButton studyPlan_id={studyPlan.id} />
                 <div className={styles.content}>
-                    <h2>{studyPlan?.name}</h2>
-
                     <form action="">
                         <div className={styles.inputWrapper}>
                             <input 

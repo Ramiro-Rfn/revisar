@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useContext, useEffect } from 'react';
 import { CardBox } from '../../components/CardBox';
+import { Header } from '../../components/Header';
 import { StudyCard } from '../../components/StudyCard';
 import { studyContext } from '../../context/studyContex';
 import { prisma } from '../../lib/prisma';
@@ -45,6 +46,13 @@ export default function Study({ studyPlan, studyQuestions }: StudyProps) {
             </Head>
 
             <div className={styles.container}>
+                <Header 
+                    title={studyPlan.name} 
+                    hasActionsButtn 
+                    studyPlan_id={studyPlan.id} 
+                    studyQuestions={studyQuestions}
+                />
+                
                 <div className={styles.content}>
 
                     <div>

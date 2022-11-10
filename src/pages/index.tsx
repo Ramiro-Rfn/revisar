@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
 import { Oval } from 'react-loader-spinner';
+import { Header } from '../components/Header';
 import { prisma } from '../lib/prisma';
 import { api } from '../services/api';
 
@@ -48,8 +49,6 @@ function Landing({ studyPlans }: LandingProps){
     }
     
   }
-
-  console.log(studyPlans)
     
   return (
       <>
@@ -57,20 +56,7 @@ function Landing({ studyPlans }: LandingProps){
            <title>revisar</title>
         </Head>
         <div className={styles.container}>
-          <header>
-            <div className={styles.content}>
-              <h1 className={styles.logo}>.revisar</h1>
-
-              <nav>
-                <Link href=''>
-                  <a>
-                    Log out
-                  </a>
-                </Link>
-              </nav>
-            </div>
-          </header>
-
+          <Header/>
           <main>
             <div className={styles.content}>
               <div className={styles.formContainer}>

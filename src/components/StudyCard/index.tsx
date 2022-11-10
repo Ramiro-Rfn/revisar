@@ -15,20 +15,14 @@ interface StudyCardProps {
 }
 
 
-function DraggableCard({ connectDragSource, connectDragPreview }) {
-    return (
-      <>
-        
-      </>
-    )
-  }
+
 
 export function StudyCard( { data, index }: StudyCardProps) {
     const [isFlipped, setIsFlipped] = useState(false);
 
     const [{ isDragging } , drag, id] = useDrag(() => ({
         type: 'CARD',
-        item: { id: data.id },
+        item: { data },
 
         collect: (monitor) => {
             return {
