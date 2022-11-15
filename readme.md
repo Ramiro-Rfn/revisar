@@ -41,5 +41,9 @@ Instale as dependências rodando:
 
 Rode o progecto:
 ```bash
+    yarn prisma init --datasource-provider sqlite
+
+    yarn prisma migrate dev 
+
     yarn dev
 ``
