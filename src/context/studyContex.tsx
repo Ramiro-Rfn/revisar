@@ -84,17 +84,21 @@ export function StudyContextProvider({ children }: studyContextProviderProps) {
         switch (boxType) {
             case 'good':
                 if(!goodItems.length) return;
-                setNewStudyQuestions(goodItems)       
+
+                setNewStudyQuestions(goodItems);
+                setGoodItems([]);       
                 break;
             case 'normal':
                 if(!normalItems.length) return;
 
-                setNewStudyQuestions(normalItems)       
+                setNewStudyQuestions(normalItems);
+                setNormalItems([]);       
                 break;
             case 'wrong':
                 if(!wrongItems.length) return;
 
-                setNewStudyQuestions(wrongItems)       
+                setNewStudyQuestions(wrongItems);
+                setWrongItems([])       
                 break;
             default:
                 break;

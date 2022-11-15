@@ -42,7 +42,7 @@ export function StudyCard( { data, index }: StudyCardProps) {
             style={{
                 width: isDragging ? '6.5rem': '',
                 height: isDragging ? '6.5rem': '', 
-                top: index * 10, 
+                top: index * 5, 
                 zIndex: index + 1,
                 display: isDragging ? 'none': 'flex',
             }}
