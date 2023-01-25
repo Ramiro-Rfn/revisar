@@ -17,10 +17,18 @@ interface HeaderProps {
     hasEstudyButton?: boolean;
     hasActionsButtn?: boolean;
     studyPlan_id?: string;
-    studyQuestions?: StudyQuestion[] 
+    studyQuestions?: StudyQuestion[];
+    studyPercentage?: number 
 }
 
-export function Header({ title, hasEstudyButton, hasActionsButtn, studyPlan_id, studyQuestions }: HeaderProps) {
+export function Header({ 
+    title, 
+    hasEstudyButton, 
+    hasActionsButtn, 
+    studyPlan_id, 
+    studyQuestions,
+    studyPercentage 
+}: HeaderProps) {
     const { resetStudy } = useContext(studyContext);
 
     return(
@@ -71,6 +79,13 @@ export function Header({ title, hasEstudyButton, hasActionsButtn, studyPlan_id, 
                     }
                 </nav>
             </div>
+            
+            
+                <div className={styles.studyProgressContainer}>
+                    <div style={{width: studyPercentage + '%', background: 'green'}}/>
+                    <p style={{marginLeft: studyPercentage + '%'}}>{studyPercentage + '%'}</p>
+                </div>
+            
         </header>
     )
 }

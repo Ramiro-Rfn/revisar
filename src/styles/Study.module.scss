@@ -1,20 +1,32 @@
 .container{
     width: 100%;
+    height: 85vh;
 
     .content {
         max-width: 600px;
+        height: 100%;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: space-between;
+
+        .nextPage {
+            padding: 0.5rem 2rem;
+            background: var(--white);
+            color: var(--gray-850);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            margin-top: 2rem;
+        }
 
         .itemsContainer {
             width: 30rem;
-            height: 27rem;
             display: flex;
             flex-direction: column;
             position: relative;
             margin-top: 2rem;
+
 
             .cardEmpty {
                 width: 30rem;

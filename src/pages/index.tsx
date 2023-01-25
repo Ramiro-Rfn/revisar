@@ -117,7 +117,7 @@ export default Landing;
 
 
 export const getServerSideProps: GetServerSideProps =async () => {
-  const studyPlans = await prisma.studyPlan.findMany();
+  const studyPlans = await prisma.studyPlan.findMany()
 
   const data = studyPlans.map((studyPlan)=> {
     return {

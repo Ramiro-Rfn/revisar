@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CardBox } from '../../components/CardBox';
 import { Header } from '../../components/Header';
 import { StudyCard } from '../../components/StudyCard';
@@ -24,22 +24,27 @@ interface StudyProps {
     studyQuestions: StudyQuestion[] 
 }
 
-export default function Study({ studyPlan, studyQuestions }: StudyProps) {
-    
+export default function Study({ studyPlan, studyQuestions }: StudyProps) {    
     const { 
         goodItems, 
         normalItems, 
         wrongItems,
-        newStudyQuestions,
-        setNewStudyQuestions 
+        visibleQuestions,
+        studyPercentage,
+        nextStudyQuestions,
+        setNewStudyQuestions
     } = useContext(studyContext);
+
+    
+    const [pageStart, setPageStart] = useState(0);
+    //const [pageEnd, setPageEnd] = useState(0);
 
     useEffect(()=>{
         setNewStudyQuestions(studyQuestions)
     }, [])
 
-    
-    return(
+
+    return (
         <>
             <Head>
                 <title>Estudar  | {studyPlan.name}</title>
@@ -51,13 +56,10 @@ export default function Study({ studyPlan, studyQuestions }: StudyProps) {
                     hasActionsButtn 
                     studyPlan_id={studyPlan.id} 
                     studyQuestions={studyQuestions}
+                    studyPercentage={studyPercentage}
                 />
                 
                 <div className={styles.content}>
-
-                    <div>
-                        
-                    </div>
                     <div className={styles.itemsContainer} >
 
                         <div className={styles.cardEmpty}>
@@ -65,12 +67,18 @@ export default function Study({ studyPlan, studyQuestions }: StudyProps) {
                         </div>
                         
                         {
-                            newStudyQuestions.map((studyQuestion, index)=>{
+                            visibleQuestions.map((studyQuestion, index)=>{
                                 return (
                                     <StudyCard key={studyQuestion.id} data={studyQuestion} index={index}/>
                                 )
                             })
                         }
+                    </div>
+
+                    <div>
+                        <button className={styles.nextPage}  onClick={nextStudyQuestions}>
+                            Progredir
+                        </button>
                     </div>
 
                     <div  className={styles.boxsContainer}>
@@ -115,6 +123,8 @@ export default function Study({ studyPlan, studyQuestions }: StudyProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
     const studyPlanId = params?.id;
+    const page = 6;
+    const perPage = 10;
 
     const studyPlan = await prisma.studyPlan.findUnique({where: { id: String(studyPlanId) }});
     const studyQuestions = await prisma.studyQuestion.findMany({where: { studyPlanId: String(studyPlanId) }})

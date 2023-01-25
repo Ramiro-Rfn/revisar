@@ -1,8 +1,31 @@
 .headerContainer {
     width: 100%;
+    position: relative;
     background-color: var(--gray-900);
     border-bottom: 1px solid var(--gray-850);
     height: 5rem;
+
+    .studyProgressContainer {
+        width: 100%;
+        height: 2px;
+        position: absolute;
+        bottom: -2px;
+
+        div {
+            position: absolute;
+            height: 100%;
+            transition: all 0.4s ease;
+        }
+
+        p {
+            position: absolute;
+            bottom: -20px;
+            font-size: 12px;
+            color: var(--white);
+            transition: all 0.4s ease;
+            transform: translateX(-100%);
+        }
+    }
 
     .content {
         max-width: 900px;

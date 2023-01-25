@@ -14,9 +14,6 @@ interface StudyCardProps {
     index: number,
 }
 
-
-
-
 export function StudyCard( { data, index }: StudyCardProps) {
     const [isFlipped, setIsFlipped] = useState(false);
 

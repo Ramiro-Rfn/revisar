@@ -41,8 +41,6 @@ export function CardBox({ label, color, totalItem, image, boxType }: CardBoxProp
     return (
         <div 
             ref={drop} 
-            style={{
-            }} 
             className={styles.cardBox}
             onClick={handleClickBox}
         >
